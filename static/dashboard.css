@@ -1,34 +1,120 @@
-/* Add some basic styles for better readability */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f0f0f0;
 }
+
 header {
-    background-color: #333;
-    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
+    background-color: #333; /* Adjust the background color as needed */
+    color: white; /* Adjust the text color as needed */
 }
+
+img {
+    max-width: 75px; /* Adjust the maximum width as needed */
+    height: auto; /* Maintain the image's aspect ratio */
+}
+
+h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+.welcome-text {
+    font-size: 18px;
+}
+
+.logout {
+    text-decoration: none;
+    color: white; /* Adjust the text color as needed */
+    border: 1px solid white; /* Add a border around the "Logout" link */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
 main {
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.public-feed {
-    border: 1px solid #ccc;
+
+form {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
     padding: 10px;
-    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
 }
-.public-feed h2 {
+
+button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.public-feed {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+h2 {
     font-size: 24px;
     margin-bottom: 10px;
 }
-.public-feed ul {
+
+ul {
     list-style: none;
     padding: 0;
 }
-.public-feed li {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
+
+li {
+    margin-bottom: 30px; /* Increased margin to space out comments */
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
 }
-.public-feed li:last-child {
-    border-bottom: none;
+
+li strong {
+    font-size: 18px;
+}
+
+li a {
+    text-decoration: none;
+    color: #333;
+}
+
+form[action^="/delete_post"] {
+    margin-top: 10px;
+}
+
+/* Remove background for the delete button */
+form[action^="/delete_post"] button[type="submit"] {
+    background-color: transparent;
+    color: #333;
+    border: none;
+    font-size: 18px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Style the comment text */
+.comment-text {
+    margin-top: 10px;
+    font-size: 16px;
 }
