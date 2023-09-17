@@ -8,31 +8,41 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to Blubber</h1>
-        <p>Welcome, {{ username }}!</p>
+        <img src="/static/blubberlogo.png" alt="Blubber">
+        <p class="welcome-text">Welcome, {{ username }}!</p>
         <a href="/login" class="logout">Logout</a>
     </header>
     <main>
+        <!-- Post Form -->
+        <form method="POST" action="/post">
+            <textarea name="message" placeholder="What's on your mind?"></textarea>
+            <button type="submit">Post</button>
+        </form>
 
-   <!-- Add this form to your dashboard.html template -->
-<form method="POST" action="/post">
-    <textarea name="message" placeholder="What's on your mind?"></textarea>
-    <button type="submit">Post</button>
-</form>
+         <!-- Search Bar -->
+         <div class="search-bar">
+            <form method="GET" action="/search">
+                <input type="text" name="query" placeholder="Search for users">
+                <button type="submit">Search</button>
+            </form>
+        </div>
 
-
-<!-- Add this code to display the public feed posts -->
-<div class="public-feed">
-    <h2>Public Feed</h2>
-    <ul>
-        {% for post in posts %}
-        <li>
-            <strong>{{ post.username }}</strong><br> {{ post.message }}
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
+        <!-- Public Feed -->
+        <div class="public-feed">
+            <h2>Public Feed</h2>
+            <ul>
+                {% for post in posts|reverse %}
+                <li>
+                    <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> {{ post.message }}
+                    {% if post.username == username %}  <!-- Only show delete option for user's own posts -->
+                    <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+                        <button type="submit">&#128465;</button>
+                    </form>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </main>
 </body>
 </html>
