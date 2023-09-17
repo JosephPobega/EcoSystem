@@ -1,11 +1,51 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from flask import abort
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'  # Update the database URI
 db = SQLAlchemy(app)
+
+
+
+@app.route('/profile/<username>')
+def profile(username):
+    # Fetch user information based on the provided username
+    user_data = User.query.filter_by(username=username).first()
+
+    if user_data is None:
+        # Handle the case where the user does not exist
+        return "User not found", 404
+
+    # Fetch all posts by the user
+    user_posts = Post.query.filter_by(username=username).all()
+
+    # Render the profile.html template with the user's data and posts
+    return render_template('profile.html', user=user_data, posts=user_posts)
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '')
+
+    # Implement logic to search for users based on the query
+    # You can query your database here to find matching users
+    # For simplicity, let's assume you have a User model
+
+    # Replace 'User' with the actual model representing your users
+    users = User.query.filter(User.username.ilike(f"%{query}%")).all()
+
+    # Render a template to display search results
+    return render_template('search_results.html', query=query, users=users)
+
+
+# Define the get_user_data function to retrieve user data
+def get_user_data(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)  # User not found, return a 404 error
+    return user
 
 # Define the User model
 class User(db.Model):
@@ -90,6 +130,32 @@ def post_message():
         flash('Please log in first', 'error')
     
     return redirect(url_for('dashboard'))
+
+
+@app.route('/delete_post/<int:post_id>', methods=['POST'])
+def delete_post(post_id):
+    if 'username' in session:
+        username = session['username']
+        
+        # Check if the post with the given ID exists and belongs to the current user
+        post = Post.query.filter_by(id=post_id, username=username).first()
+        
+        if post:
+            # Delete the post from the database
+            db.session.delete(post)
+            db.session.commit()
+            flash('Post deleted successfully', 'success')
+        else:
+            flash('Post not found or you do not have permission to delete it', 'error')
+    else:
+        flash('Please log in first', 'error')
+    
+    return redirect(url_for('dashboard'))
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
