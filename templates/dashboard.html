@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blubber</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Blubber</h1>
+        <p>Welcome, {{ username }}!</p>
+        <a href="/login" class="logout">Logout</a>
+    </header>
+    <main>
+
+   <!-- Add this form to your dashboard.html template -->
+<form method="POST" action="/post">
+    <textarea name="message" placeholder="What's on your mind?"></textarea>
+    <button type="submit">Post</button>
+</form>
+
+
+<!-- Add this code to display the public feed posts -->
+<div class="public-feed">
+    <h2>Public Feed</h2>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <strong>{{ post.username }}</strong><br> {{ post.message }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+    </main>
+</body>
+</html>
