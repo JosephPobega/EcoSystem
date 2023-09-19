@@ -2,16 +2,22 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-color: black; /* Use your preferred background color */
 }
 
 header {
     display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #333; /* Adjust the background color as needed */
+    background-color: black; /* Adjust the background color as needed */
     color: white; /* Adjust the text color as needed */
+    z-index: 100; /* Ensure the header is above other content */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 img {
@@ -40,18 +46,20 @@ main {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
+    padding-top: 100px;
+    background-color: rgb(0, 0, 0);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 form {
     margin-bottom: 20px;
+    padding-right: 3%;
 }
 
 textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffffff;
     border-radius: 5px;
     resize: none;
 }
@@ -63,12 +71,20 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    opacity: 0.7; /* Default opacity */
+    transition: opacity 0.3s ease; /* Add transition for smooth fade effect */
+}
+
+button[type="submit"]:hover {
+    opacity: 1; /* Increase opacity on hover */
 }
 
 .public-feed {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #ffffff;
     padding-top: 20px;
 }
+
+
 
 h2 {
     font-size: 24px;
@@ -79,6 +95,8 @@ ul {
     list-style: none;
     padding: 0;
 }
+
+
 
 li {
     margin-bottom: 30px; /* Increased margin to space out comments */
@@ -117,4 +135,9 @@ form[action^="/delete_post"] button[type="submit"] {
 .comment-text {
     margin-top: 10px;
     font-size: 16px;
+}
+
+.post-message {
+    overflow-wrap: break-word; /* Handle overflow */
+    color: #fff;
 }
