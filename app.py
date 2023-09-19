@@ -2,11 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
 
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'  # Update the database URI
 db = SQLAlchemy(app)
+
+
+# Define the directory where uploaded files will be saved
+UPLOAD_FOLDER = 'uploads'  # Create this folder in your project directory
+
+# Configure the app to use the upload folder
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 
