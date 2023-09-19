@@ -9,15 +9,34 @@
 <body>
     <header>
         <img src="/static/blubberlogo.png" alt="Blubber">
-        <p class="welcome-text">Welcome, {{ username }}!</p>
+        <p class="welcome-text">HOME</p>
         <a href="/login" class="logout">Logout</a>
     </header>
+
+    <script>
+        // Get the logo element
+        const logo = document.querySelector('header img');
+    
+        // Add a click event listener to the logo
+        logo.addEventListener('click', () => {
+            // Scroll to the top of the page smoothly
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        });
+    </script>
+
+
+
     <main>
         <!-- Post Form -->
         <form method="POST" action="/post">
             <textarea name="message" placeholder="What's on your mind?"></textarea>
             <button type="submit">Post</button>
         </form>
+
+
 
          <!-- Search Bar -->
          <div class="search-bar">
@@ -27,16 +46,18 @@
             </form>
         </div>
 
+
+        
         <!-- Public Feed -->
         <div class="public-feed">
             <h2>Public Feed</h2>
             <ul>
                 {% for post in posts|reverse %}
-                <li>
+                <li class="post-message">
                     <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> {{ post.message }}
                     {% if post.username == username %}  <!-- Only show delete option for user's own posts -->
                     <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
-                        <button type="submit">&#128465;</button>
+                        <button type="submit">DELETE</button>
                     </form>
                     {% endif %}
                 </li>
