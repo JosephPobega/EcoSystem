@@ -5,6 +5,12 @@ body, h1, h2, p, ul {
     padding: 0;
 }
 
+body{
+    background-color: #8C9FA9;
+}
+
+
+
 /* Basic styling for the header */
 header {
     background-color: black;
@@ -36,7 +42,7 @@ main {
 
 /* Style the profile information section */
 .profile-info {
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     padding: 10px;
     margin-bottom: 20px;
     background-color: #f9f9f9;
