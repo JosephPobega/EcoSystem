@@ -27,11 +27,22 @@
     <!---------------------------------------------------------->
 
     <div class="search-bar">
-            <form method="GET" action="/search">
-                <input type="text" name="query" placeholder="Search for users">
-                <button type="submit">Search</button>
-            </form>
-        </div>
+        <form method="GET" action="/search">
+            <input type="text" name="query" placeholder="Search for users">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div class="suggested-users">
+        <h2>Suggested Users</h2>
+        <ul>
+            <!-- Loop through and display suggested users here -->
+            {% for user in suggested_users %}
+                <li><a href="{{ url_for('profile', username=user.username) }}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
     
     <main>
         <form method="POST" action="/post">
@@ -47,12 +58,18 @@
                 <li class="post-message">
                     <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> {{ post.message }}
                     <div class="post-actions">
-                        </form>
+                        {% if post.username == username %}
+                            <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+                                <button type="submit" class="delete-button">🗑️</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
+
+        
         
     </main>
 
