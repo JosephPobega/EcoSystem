@@ -8,7 +8,7 @@
 <body>
 
     <div class="registerLoginName">
-        <h1>Blubber</h1>
+        <h1>EcoSystem</h1>
     </div>
 
     <header>
@@ -30,7 +30,7 @@
         
         <input type="submit" value="Register">
     </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p><br>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class="flashes">

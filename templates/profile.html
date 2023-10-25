@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 </head>
 <body>
+
     <header>
         <h1>User Profile</h1>
         <p class="username">{{ user.username }}</p>
@@ -18,7 +19,6 @@
             <h2>Profile Information</h2>
             <p><strong>Username:</strong> {{ user.username }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <!-- Add more user profile information here -->
         </div>
         
         <div class="user-posts">
@@ -30,5 +30,6 @@
             </ul>
         </div>
     </main>
+    
 </body>
 </html>
