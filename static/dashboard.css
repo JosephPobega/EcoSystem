@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: black; /* Use your preferred background color */
+    background-color: #8C9FA9;
 }
 
 header {
@@ -14,15 +14,15 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: black; /* Adjust the background color as needed */
-    color: white; /* Adjust the text color as needed */
-    z-index: 100; /* Ensure the header is above other content */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: black; 
+    color: white;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 img {
-    max-width: 75px; /* Adjust the maximum width as needed */
-    height: auto; /* Maintain the image's aspect ratio */
+    max-width: 75px; 
+    height: auto; 
 }
 
 h1 {
@@ -31,13 +31,14 @@ h1 {
 }
 
 .welcome-text {
-    font-size: 18px;
+    font-size: 22px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .logout {
     text-decoration: none;
-    color: white; /* Adjust the text color as needed */
-    border: 1px solid white; /* Add a border around the "Logout" link */
+    color: white; 
+    border: 1px solid white; 
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -49,6 +50,7 @@ main {
     padding-top: 100px;
     background-color: rgb(0, 0, 0);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
 }
 
 form {
@@ -71,19 +73,59 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    opacity: 0.7; /* Default opacity */
-    transition: opacity 0.3s ease; /* Add transition for smooth fade effect */
+    opacity: 0.7;
+    transition: opacity 0.3 ease; /* Add transition for smooth fade effect */
 }
 
 button[type="submit"]:hover {
     opacity: 1; /* Increase opacity on hover */
 }
 
+.search-bar {
+    background-color: black; 
+    border: 22px solid black; 
+    position: absolute;
+    left: 25;
+    top: 15%;
+    width: 250px; 
+    float: left; 
+    margin-right: 5px; 
+    border-radius: 20px;
+}
+
+
+.search-bar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.search-bar button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.search-bar button[type="submit"]:hover {
+    opacity: 1;
+}
+
 .public-feed {
     border-top: 1px solid #ffffff;
     padding-top: 20px;
+    clear: both;
 }
 
+
+.public-feed h2{
+    color: #fff;
+}
 
 
 h2 {
@@ -100,7 +142,7 @@ ul {
 
 li {
     margin-bottom: 30px; /* Increased margin to space out comments */
-    border: 1px solid #ccc;
+    border: 1px solid #ffffff;
     padding: 15px;
     border-radius: 5px;
     position: relative;
@@ -112,7 +154,7 @@ li strong {
 
 li a {
     text-decoration: none;
-    color: #333;
+    color: #ffffff;
 }
 
 form[action^="/delete_post"] {
@@ -131,7 +173,6 @@ form[action^="/delete_post"] button[type="submit"] {
     cursor: pointer;
 }
 
-/* Style the comment text */
 .comment-text {
     margin-top: 10px;
     font-size: 16px;
@@ -140,4 +181,9 @@ form[action^="/delete_post"] button[type="submit"] {
 .post-message {
     overflow-wrap: break-word; /* Handle overflow */
     color: #fff;
+}
+
+
+footer{
+    text-align: center;
 }
