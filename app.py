@@ -103,11 +103,16 @@ def dashboard():
     if 'username' in session:
         logged_in_username = session['username']
         posts = Post.query.all()  # Retrieve all posts
+        # Suggested users logic to be implemented here
+        suggested_users = User.query.filter(User.username != logged_in_username).limit(5).all()
 
-        return render_template("dashboard.html", username=logged_in_username, posts=posts)
+        return render_template("dashboard.html", username=logged_in_username, posts=posts, suggested_users=suggested_users)
     else:
         flash('Please log in first', 'error')
         return redirect(url_for('login'))
+
+
+
 
 
 @app.route('/post', methods=['POST'])
