@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
