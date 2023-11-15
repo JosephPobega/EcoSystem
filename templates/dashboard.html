@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoSystem</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="{{ url_for('static', filename='synclike.js') }}"></script>
+    <script src="{{ url_for('static', filename='top.js') }}"></script>
 </head>
 <body>
     <header>
@@ -14,17 +16,6 @@
     </header>
 
 
-    <!-- Script to return to top of page when logo is pressed -->
-    <script>
-        const logo = document.querySelector('header img');
-        logo.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
-        });
-    </script>
-    <!---------------------------------------------------------->
 
     <div class="search-bar">
         <form method="GET" action="/search">
@@ -38,9 +29,10 @@
         <ul>
             <!-- Loop through and display suggested users here -->
             {% for user in suggested_users %}
-                <li><a href="{{ url_for('profile', username=user.username) }}">{{ user.username }}</a></li>
-            {% endfor %}
-        </ul>
+            <li><a class="suggested-user-link" href="{{ url_for('profile', username=user.username) }}">{{ user.username }}</a></li>
+        {% endfor %}
+    </ul>
+        </div> 
     </div>
 
     
@@ -56,8 +48,15 @@
             <ul>
                 {% for post in posts|reverse %}
                 <li class="post-message">
-                    <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> {{ post.message }}
+                    <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> 
+                    {{ post.message }}
                     <div class="post-actions">
+                        <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}" class="like-form">
+                            <button type="submit" class="like-button" id="like-btn-{{ post.id }}" {% if post.liked_by and username in post.liked_by %}disabled{% endif %}>
+                                {% if post.liked_by and username in post.liked_by %}👎{% else %}👍{% endif %}
+                            </button>
+                        </form>
+                        <span class="like-count" id="like-count-{{ post.id }}">{{ post.likes }}</span>
                         {% if post.username == username %}
                             <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
                                 <button type="submit" class="delete-button">🗑️</button>
@@ -69,7 +68,7 @@
             </ul>
         </div>
 
-        
+    
         
     </main>
 
