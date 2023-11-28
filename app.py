@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
+from sqlalchemy.orm import relationship
+from flask import jsonify
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -16,6 +18,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    liked_posts = relationship('Post', secondary='user_like_post', back_populates='liked_by')
 
 
 # Define the Post model
@@ -23,6 +26,14 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False)
     message = db.Column(db.String(280), nullable=False)
+    likes = db.Column(db.Integer, default=0)
+    liked_by = relationship('User', secondary='user_like_post', back_populates='liked_posts')
+
+user_like_post = db.Table(
+    'user_like_post',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
+)
 
 
 # creates the sqlite database
@@ -113,8 +124,6 @@ def dashboard():
 
 
 
-
-
 @app.route('/post', methods=['POST'])
 def post_message():
     if 'username' in session:
@@ -129,6 +138,34 @@ def post_message():
         flash('Please log in first', 'error')
     
     return redirect(url_for('dashboard'))
+
+
+
+@app.route('/like_post/<int:post_id>', methods=['POST'])
+def like_post(post_id):
+    if 'username' in session:
+        username = session['username']
+        post = Post.query.get(post_id)
+        user = User.query.filter_by(username=username).first()
+
+        if post and user:
+            if user in post.liked_by:
+                post.likes -= 1
+                post.liked_by.remove(user)
+                db.session.commit()
+                return jsonify({'success': True, 'action': 'unlike', 'likes': post.likes})
+            else:
+                post.likes += 1
+                post.liked_by.append(user)
+                db.session.commit()
+                return jsonify({'success': True, 'action': 'like', 'likes': post.likes})
+        else:
+            flash('Post not found or user not authenticated', 'error')
+    else:
+        flash('Please log in first', 'error')
+
+    return jsonify({'success': False, 'message': 'Error processing like'})
+
 
 
 @app.route('/delete_post/<int:post_id>', methods=['POST'])
@@ -152,3 +189,4 @@ def delete_post(post_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+        
