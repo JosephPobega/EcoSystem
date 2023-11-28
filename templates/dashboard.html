@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoSystem</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
-    <script src="{{ url_for('static', filename='synclike.js') }}"></script>
     <script src="{{ url_for('static', filename='top.js') }}"></script>
 </head>
+
 <body>
     <header>
         <img src="/static/blubberlogo.png" alt="Blubber">
@@ -15,27 +16,23 @@
         <a href="/login" class="logout">Logout</a>
     </header>
 
-
-
     <div class="search-bar">
         <form method="GET" action="/search">
             <input type="text" name="query" placeholder="Search for users">
             <button type="submit">Search</button>
         </form>
     </div>
-    
+
     <div class="suggested-users">
         <h2>Suggested Users</h2>
         <ul>
-            <!-- Loop through and display suggested users here -->
+            <!-- Loop through and display suggested users (last 5 on database) -->
             {% for user in suggested_users %}
             <li><a class="suggested-user-link" href="{{ url_for('profile', username=user.username) }}">{{ user.username }}</a></li>
-        {% endfor %}
-    </ul>
-        </div> 
+            {% endfor %}
+        </ul>
     </div>
 
-    
     <main>
         <form method="POST" action="/post">
             <textarea name="message" placeholder="What's on your mind?"></textarea>
@@ -48,34 +45,65 @@
             <ul>
                 {% for post in posts|reverse %}
                 <li class="post-message">
-                    <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br> 
+                    <strong><a href="{{ url_for('profile', username=post.username) }}">{{ post.username }}</a></strong><br>
                     {{ post.message }}
                     <div class="post-actions">
                         <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}" class="like-form">
-                            <button type="submit" class="like-button" id="like-btn-{{ post.id }}" {% if post.liked_by and username in post.liked_by %}disabled{% endif %}>
+                            <button type="submit" class="like-button" id="like-btn-{{ post.id }}"
+                                {% if post.liked_by and username in post.liked_by %}disabled{% endif %}>
                                 {% if post.liked_by and username in post.liked_by %}👎{% else %}👍{% endif %}
                             </button>
                         </form>
                         <span class="like-count" id="like-count-{{ post.id }}">{{ post.likes }}</span>
                         {% if post.username == username %}
-                            <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
-                                <button type="submit" class="delete-button">🗑️</button>
-                            </form>
+                        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+                            <button type="submit" class="delete-button">🗑️</button>
+                        </form>
                         {% endif %}
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-
-    
-        
     </main>
+
+
+    <!---------------Javascript code to handle user post likes ----------------->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.like-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const postId = event.target.getAttribute('action').split('/').pop();
+                    const likeCountSpan = document.getElementById('like-count-' + postId);
+                    const likeBtn = document.getElementById('like-btn-' + postId);
+
+                    fetch(event.target.getAttribute('action'), {
+                            method: 'POST',
+                            credentials: 'include',
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                likeCountSpan.innerText = data.likes;
+                                likeBtn.innerText = data.action === 'like' ? '👎' : '👍';
+                                likeBtn.disabled = true;
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+    </script>
+    <!-------------------------------------------------------->
+
 
     <footer>
         <p1>Ecosystem @ 2023</p1>
     </footer>
 
-
 </body>
+
 </html>
