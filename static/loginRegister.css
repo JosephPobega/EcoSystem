@@ -124,7 +124,7 @@ a {
 }
 
 .logo img {
-    max-width: 200px; /* Adjust the maximum width as needed */
+    max-width: 200px; 
     height: auto;
     border-radius: 25px;
 }
