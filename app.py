@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'
-db = SQLAlchemy(app)
-
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app, session_options={'autocommit': False, 'autoflush': False})
 
 
 # Define the User model
