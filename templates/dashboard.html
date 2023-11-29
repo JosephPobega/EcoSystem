@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
     <script src="{{ url_for('static', filename='top.js') }}"></script>
 </head>
+
 
 <body>
     <header>
@@ -23,6 +25,8 @@
         </form>
     </div>
 
+
+    
     <div class="suggested-users">
         <h2>Suggested Users</h2>
         <ul>
@@ -33,11 +37,13 @@
         </ul>
     </div>
 
+
     <main>
         <form method="POST" action="/post">
             <textarea name="message" placeholder="What's on your mind?"></textarea>
             <button type="submit">Post</button>
         </form>
+
 
 
         <div class="public-feed">
@@ -49,8 +55,7 @@
                     {{ post.message }}
                     <div class="post-actions">
                         <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}" class="like-form">
-                            <button type="submit" class="like-button" id="like-btn-{{ post.id }}"
-                                {% if post.liked_by and username in post.liked_by %}disabled{% endif %}>
+                            <button type="submit" class="like-button" data-post-id="{{ post.id }}" {% if post.liked_by and username in post.liked_by %}disabled{% endif %}>
                                 {% if post.liked_by and username in post.liked_by %}👎{% else %}👍{% endif %}
                             </button>
                         </form>
@@ -68,34 +73,49 @@
     </main>
 
 
+
     <!---------------Javascript code to handle user post likes ----------------->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.like-form').forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const postId = event.target.getAttribute('action').split('/').pop();
-                    const likeCountSpan = document.getElementById('like-count-' + postId);
-                    const likeBtn = document.getElementById('like-btn-' + postId);
+      document.addEventListener('DOMContentLoaded', function () {
+    // Iterate over each like form
+    document.querySelectorAll('.like-form').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            // Prevent the default form submission
+            event.preventDefault();
 
-                    fetch(event.target.getAttribute('action'), {
-                            method: 'POST',
-                            credentials: 'include',
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                likeCountSpan.innerText = data.likes;
-                                likeBtn.innerText = data.action === 'like' ? '👎' : '👍';
-                                likeBtn.disabled = true;
-                            } else {
-                                alert(data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
+            // Extract the post ID from the form's action attribute
+            const postId = event.target.getAttribute('action').split('/').pop();
+
+            // Find the relevant elements using the post ID
+            const likeCountSpan = document.getElementById('like-count-' + postId);
+            const likeBtn = document.querySelector('.like-button[data-post-id="' + postId + '"]');
+
+            // Send an AJAX request to like/unlike the post
+            fetch(event.target.getAttribute('action'), {
+                    method: 'POST',
+                    credentials: 'include',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the request was successful
+                    if (data.success) {
+                        // Update the like count and button text
+                        likeCountSpan.innerHTML = data.likes;
+                        likeBtn.innerHTML = data.action === 'like' ? '👎' : '👍';
+
+                        // Re-enable the button after the update
+                        likeBtn.disabled = false;
+                    } else {
+                        // Display an alert if there's an issue
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
+    });
+});
+
+           
     </script>
     <!-------------------------------------------------------->
 
