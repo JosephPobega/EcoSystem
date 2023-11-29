@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import abort
 from sqlalchemy.orm import relationship
 from flask import jsonify
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -47,8 +48,12 @@ def profile(username):
     user_data = User.query.filter_by(username=username).first()
     if user_data is None:
         return "User not found", 404
+
+    # Calculate the total likes using the SQLAlchemy func.sum
+    total_likes = db.session.query(func.sum(Post.likes)).filter(Post.username == username).scalar() or 0
+
     user_posts = Post.query.filter_by(username=username).all()
-    return render_template('profile.html', user=user_data, posts=user_posts)
+    return render_template('profile.html', user=user_data, posts=user_posts, total_likes=total_likes)
     
 
 
