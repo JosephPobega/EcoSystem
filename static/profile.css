@@ -3,13 +3,12 @@ body, h1, h2, p, ul {
     padding: 0;
 }
 
-body{
-    background-color: #8C9FA9;
+body {
+    background-color: #ffffff
 }
 
-
 header {
-    background-color: black;
+    background-color: #333;
     color: white;
     text-align: center;
     padding: 10px;
@@ -19,6 +18,7 @@ header {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 5px;
+    color: white;
 }
 
 .logout, .dashboard {
@@ -27,12 +27,14 @@ header {
     margin: 0 10px;
 }
 
-
 main {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     font-family: Arial, sans-serif;
+    background-color: #fff; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .profile-info {
@@ -55,11 +57,9 @@ main {
     border-radius: 5px;
 }
 
-
 h2 {
     color: #333;
 }
-
 
 a {
     color: #3498db;
