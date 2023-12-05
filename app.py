@@ -4,6 +4,7 @@ from flask import abort
 from sqlalchemy.orm import relationship
 from flask import jsonify
 from sqlalchemy import func
+from flask import request
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -41,6 +42,17 @@ user_like_post = db.Table(
 # creates the sqlite database
 with app.app_context():
     db.create_all()
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+    # CHECK IF SERVER IS RUNNING ->
+    #server_info = request.environ.get('SERVER_SOFTWARE', 'Unknown')
+    #return f"Server running: {server_info}"
+
+
 
 
 @app.route('/profile/<username>')
@@ -89,9 +101,6 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/')
-def index():
-    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
