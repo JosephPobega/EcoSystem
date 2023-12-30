@@ -1,3 +1,3 @@
-# blubber-network
+# EcoSystem
 
 social networking web app
